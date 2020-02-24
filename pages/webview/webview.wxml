@@ -1,0 +1,1 @@
+<web-view src="https://sis.ustb.edu.cn/auth?sid={{sid}}"></web-view>

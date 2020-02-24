@@ -1,0 +1,35 @@
+{
+	"pages": [
+		"pages/table/table",
+		"pages/about/about",
+		"pages/webview/webview",
+		"pages/log/log"
+	],
+	"window": {
+		"backgroundTextStyle": "dark",
+		"navigationBarBackgroundColor": "#578fff",
+		"navigationBarTitleText": "",
+		"navigationBarTextStyle": "white"
+	},
+	"sitemapLocation": "sitemap.json",
+	"tabBar": {
+		"color": "#000",
+		"selectedColor": "#1AAD19",
+		"borderStyle": "white",
+		"backgroundColor": "#f9f9f9",
+		"list": [{
+				"text": "课表",
+				"pagePath": "pages/table/table",
+				"iconPath": "static/tarbar/table.png",
+				"selectedIconPath": "static/tarbar/table-active.png"
+			},
+			{
+				"text": "我",
+				"pagePath": "pages/about/about",
+				"iconPath": "static/tarbar/me.png",
+				"selectedIconPath": "static/tarbar/me-active.png"
+			}
+		]
+	}
+
+}

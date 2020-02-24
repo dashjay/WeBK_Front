@@ -1,0 +1,149 @@
+/* pages/table/table.wxss */
+
+.flex-item {
+	width: 120rpx;
+}
+
+.kcb-item {
+	position: absolute;
+	justify-content: center;
+	display: flex;
+	align-items: center;
+}
+
+.smalltext {
+	font-size: 11pt;
+	color: #fff;
+}
+
+.smallcut {
+	display: -webkit-box;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	word-break: break-all;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+}
+
+.top-style {
+	display: flex;
+	flex-direction: row;
+	/* margin-left: 35rpx; */
+	background-color: #eee;
+	border-radius: 10rpx;
+}
+
+.top-text {
+	width: 155rpx;
+	height: 35rpx;
+	/* margin-left: 10rpx; */
+	font-size: 10pt;
+	justify-content: center;
+	display: flex;
+	align-items: center;
+}
+
+.full-table {
+	height: 1000rpx;
+	width: 600rpx;
+	display: flex;
+}
+
+.left-num-bar {
+	background-color: #eee;
+	color: #000;
+	border-radius: 10rpx;
+}
+
+.left-num {
+	display: flex;
+	width: 40rpx;
+	height: 170rpx;
+	font-size: 9pt;
+	justify-content: center;
+	align-items: center;
+}
+
+.left {
+	width: 35rpx;
+	height: 100rpx;
+	font-size: 9pt;
+	justify-content: center;
+	display: flex;
+	align-items: center;
+}
+
+
+.divLine {
+	height: 100%;
+	position: absolute;
+	/* border-radius: 3rpx; */
+	border-right: 5rpx dashed #b6b8b1;
+	width: 5rpx;
+}
+
+/* .container {
+	padding-top: 120rpx;
+}
+ */
+.tui-animation {
+	-webkit-animation: tui-rolling 12s linear infinite;
+	animation: tui-rolling 12s linear infinite;
+}
+
+.tui-icon-bg {
+	background: #fff8d5;
+	padding-left: 30rpx;
+	position: relative;
+	z-index: 10;
+}
+
+.tui-rolling-icon {
+	margin-right: 12rpx;
+}
+
+.tui-scorll-view {
+	flex: 1;
+	line-height: 1;
+	white-space: nowrap;
+	overflow: hidden;
+	color: #f54f46;
+}
+
+.tui-notice {
+	transform: translateX(100%);
+}
+
+.tui-notice-board {
+	width: 100%;
+	padding-right: 30rpx;
+	box-sizing: border-box;
+	font-size: 28rpx;
+	height: 60rpx;
+	background: #fff8d5;
+	display: flex;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	z-index: 999;
+}
+
+@-webkit-keyframes tui-rolling {
+	0% {
+		transform: translateX(100%);
+	}
+
+	100% {
+		transform: translateX(-170%);
+	}
+}
+
+@keyframes tui-rolling {
+	0% {
+		transform: translateX(100%);
+	}
+
+	100% {
+		transform: translateX(-170%);
+	}
+}
