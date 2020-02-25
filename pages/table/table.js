@@ -1,4 +1,5 @@
 const app = getApp()
+import regeneratorRuntime from '../../utils/regenerator-runtime/runtime'
 
 Page({
 	data: {
@@ -15,6 +16,7 @@ Page({
 		}, ],
 		current_course: null,
 		animation: true,
+
 		durations: ["8:00-9:35", "9:55-11:30", "1:30-3:05", "3:20-4:55"]
 	},
 
@@ -37,34 +39,71 @@ Page({
 	},
 
 	onLoad: function(options) {
-		// if (options.q) {
-		// 	let u = decodeURI(options.q)
-		// 	let uid = u.substr(u.length - 8)
-		// 	this.setData({
-		// 		uid: uid
-		// 	})
-		// }
 		let table = wx.getStorageSync("classtable")
 		if (table) {
 			app.globalData.classtable = table;
 		}
+		let session = wx.getStorageSync("session")
+		if (session) {
+			app.globalData.session = session;
+		}
+	},
+
+	async Login() {
+		let that = this;
+		// 获取到Code
+		let code = await app.GetCode()
+		let Rescode2Session = await app.Code2Session(code)
+		// 获取成功
+		if (Rescode2Session.data.status) {
+			let obj = Rescode2Session.data.object;
+			app.globalData.session = obj.session_key;
+			wx.setStorageSync("session", obj.session_key)
+			console.log("储存session成功", obj.session_key)
+
+		} else {
+			wx.showModal({
+				title: "登录失败,请稍后重试",
+				confirmColor: "green",
+				confirmText: "重试",
+				cancelColor: "red",
+				cancelText: "取消",
+				success: (res) => {
+					if (res.confirm) {
+						ws.showLoading()
+						setTimeout(function() {
+							that.Login()
+						}, 1000);
+					} else {
+						wx.showToast({
+							title: "当前程序出错",
+							icon: "none"
+						})
+					}
+				}
+			})
+		}
 	},
 
 	onShow: function() {
+		// 如果没有数据
 		if (!this.haveData()) {
-			wx.showToast({
-				title: "当前没有数据,请下拉刷新",
-				icon: "none"
-			})
+			if (app.globalData.session == "") {
+				this.Login();
+			} else {
+				wx.showToast({
+					title: "登录成功"
+				})
+			}
+		} else {
+			this.incrementZero();
 		}
-		this.incrementZero();
-
 	},
 
 	LoadData() {
 		let that = this;
 		wx.request({
-			url: "http://localhost:8001/func?func=course&uid=41724235",
+			url: app.globalData.server + "api/get_table?session=" + app.globalData.session,
 			success(res) {
 				if (res.data.code == "SUCCESS") {
 					let body = res.data.body;
@@ -77,23 +116,23 @@ Page({
 								continue;
 							}
 
+
 							// console.log(body.map[i][j]) // 第j天的第i节课
 							body.map[i][j].forEach(x => {
+
 								var weeks
 								let getweek = x.SKZCZFC.replace("周", "")
 								if (getweek.indexOf("单") != -1) {
 									let temp = getweek.replace("单", "")
-									weeks = that.SplitRange(getweek, '单')
-									console.log(getweek);
-									
+									weeks = that.SplitRange(temp, '单')
 
 								} else if (getweek.indexOf("双") != -1) {
 									let temp = getweek.replace("双", "")
-									weeks = that.SplitRange(getweek, '双')
-									
+									weeks = that.SplitRange(temp, '双')
+
 								} else {
 									weeks = that.SplitRange(getweek, '无')
-									
+
 								}
 
 								app.globalData.classtable.push({
@@ -106,6 +145,7 @@ Page({
 									"id": x["classroom.id"],
 								})
 							})
+
 
 						}
 					}
@@ -289,5 +329,8 @@ Page({
 		this.setData({
 			modal: false
 		})
-	}
+	},
+
+
+
 })

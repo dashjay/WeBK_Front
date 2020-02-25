@@ -65,7 +65,7 @@ Page({
 	},
 	previewReward: function() {
 		wx.previewImage({
-			urls: ["https://thorui.cn/img/reward.jpg"]
+			urls: ["https://misc-1256941979.cos.ap-chengdu.myqcloud.com/appraciate.JPG"]
 		})
 	}
 })
