@@ -1,0 +1,9 @@
+{
+	"navigationBarBackgroundColor": "#fff",
+	"navigationBarTextStyle": "black",
+	"navigationBarTitleText": "Rate评分",
+	"usingComponents": {
+		"tui-rate": "../../components/rate/rate",
+		"tui-list-cell": "../../components/list-cell/list-cell"
+	}
+}

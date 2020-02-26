@@ -2,6 +2,8 @@
 
 page {
 	background: #fafafa;
+	overflow-x: hidden;
+	width:100%;
 	/* font-family:PingFang-SC-Medium; */
 }
 

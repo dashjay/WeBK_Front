@@ -1,0 +1,40 @@
+<view class="container">
+	<view class="header">
+		<view class="title">给我评个分吧【匿名】</view>
+		<view class="sub-title">评分：点击拖动即可</view>
+	</view>
+
+	<view class="tui-rate-box">
+		<view class="tui-title">程序美观度</view>
+		<tui-rate current="{{beauty}}" bind:change="change" data-type="beauty" size="26" active="#598eff" hollow="{{true}}"></tui-rate>
+	</view>
+	<view class="tui-rate-box">
+		<view class="tui-title">响应速度</view>
+		<tui-rate current="{{response}}" bind:change="change" data-type="response" size="26" active="#598eff" hollow="{{true}}"></tui-rate>
+	</view>
+	<view class="tui-rate-box">
+		<view class="tui-title">你觉得绑定是否方便？</view>
+		<radio-group class="radio-group" name="sex" bind:change="tapChange">
+			<label class="tui-radio">
+				<radio value="1" color="#5677fc" />方便
+			</label>
+			<label class="tui-radio">
+				<radio value="2" color="#5677fc" />不方便
+			</label>
+		</radio-group>
+	</view>
+
+	<view class="tui-line-cell" style="margin-left: 30rpx;">
+		<view class="tui-title">你有什么想和开发者说的么？请写在下方~(想要的功能或者想一起开发[选填])</view>
+	</view>
+
+
+	<tui-list-cell hover="{{false}}">
+		<textarea placeholder-class="phcolor" bindinput="Input" class="tui-input" name="age" style="height: 200rpx;" placeholder="感谢使用,感谢您提出宝贵的意见!!!"
+		 maxlength="50" type="number"></textarea>
+	</tui-list-cell>
+
+	<view class="tui-btn-box">
+		<button class="btn-primary" bindtap="Submit" hover-class="btn-hover" formType="submit" type="primary">Submit</button>
+	</view>
+</view>

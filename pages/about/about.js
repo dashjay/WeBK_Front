@@ -39,28 +39,42 @@ Page({
 	tapEvent: function(e) {
 		let index = e.currentTarget.dataset.index;
 		let url = "";
-		if (index == 1) {
-			url = '../about/about'
-		} else if (index == 2) {
-			let key = e.currentTarget.dataset.key;
-			url = '../maps/maps?key=' + key
-		} else {
-			url = '../log/log'
+		switch (index) {
+			case "1":
+				wx.showToast({
+					title: "开发中",
+					icon: "none",
+					duration: 1000
+				})
+				return;
+			case "2":
+				url = "../rate/rate"
+				break;
+			case "3":
+				wx.showToast({
+					title: "开发中",
+					icon: "none",
+					duration: 1000
+				})
+				break;
+			case "6":
+				{
+					url = '../log/log'
+					break;
+				}
 		}
+
 		wx.navigateTo({
 			url: url
 		})
 	},
-	github: function() {
-		wx.setClipboardData({
-			data: 'https://github.com/dingyong0214/ThorUI',
-			success(res) {
-				wx.getClipboardData({
-					success(res) {
-						util.toast("链接已复制", 2000, true)
-					}
-				})
-			}
+	call: function() {
+		wx.showModal({
+			title: 'Contact Me',
+			content: "wx号:zhaofang0903",
+			confirmColor: "green",
+			confirmText: "OK",
+			showCancel: false,
 		})
 	},
 	previewReward: function() {

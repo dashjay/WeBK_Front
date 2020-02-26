@@ -37,7 +37,6 @@ Page({
 		}
 		return true
 	},
-
 	onLoad: function(options) {
 		let table = wx.getStorageSync("classtable")
 		if (table) {
@@ -60,7 +59,10 @@ Page({
 			app.globalData.session = obj.session_key;
 			wx.setStorageSync("session", obj.session_key)
 			console.log("储存session成功", obj.session_key)
-
+			wx.showToast({
+				title: "和服务器连通,下拉获取课表",
+				icon: "none"
+			})
 		} else {
 			wx.showModal({
 				title: "登录失败,请稍后重试",
@@ -92,7 +94,8 @@ Page({
 				this.Login();
 			} else {
 				wx.showToast({
-					title: "登录成功"
+					title: "登录成功,下拉尝试获取课表",
+					icon: "none"
 				})
 			}
 		} else {
@@ -103,7 +106,10 @@ Page({
 	LoadData() {
 		let that = this;
 		wx.request({
-			url: app.globalData.server + "api/get_table?session=" + app.globalData.session,
+			url: app.globalData.server + "api/get_table",
+			header: {
+				session: app.globalData.session,
+			},
 			success(res) {
 				if (res.data.code == "SUCCESS") {
 					let body = res.data.body;
@@ -149,6 +155,22 @@ Page({
 
 						}
 					}
+				} else {
+					wx.showModal({
+						title: "获取课表失败",
+						content: "未在公众号绑定贝壳教务,关注「贝壳杂货铺」后,在菜单实现绑定后方可使用此功能。",
+						confirmColor: "#0f0",
+						confirmText: "二维码",
+						cancelColor: "#f00",
+						cancelText: "下次再说",
+						success: (res) => {
+							if (res.confirm) {
+								wx.previewImage({
+									urls: ["https://misc-1256941979.cos.ap-chengdu.myqcloud.com/qrcode_for_gh_88acb973f6e6_258.jpg"]
+								})
+							}
+						}
+					})
 				}
 
 				wx.setStorageSync("classtable", app.globalData.classtable)

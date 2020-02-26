@@ -11,7 +11,8 @@ App({
 		},
 		classtable: [],
 		session: "",
-		server: "http://localhost:8088/"
+		server: "https://dev.vincenteliang.cn/"
+		// server: "http://localhost:8088/"
 	},
 
 	GetCode() {

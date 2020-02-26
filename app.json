@@ -3,7 +3,8 @@
 		"pages/table/table",
 		"pages/about/about",
 		"pages/webview/webview",
-		"pages/log/log"
+		"pages/log/log",
+		"pages/rate/rate"
 	],
 	"window": {
 		"backgroundTextStyle": "dark",

@@ -1,8 +1,8 @@
 {
-  "enablePullDownRefresh":true,
-  "backgroundTextStyle": "dark",
-  "usingComponents": {
-    "modal": "../../components/modal/modal",
-	"tui-icon": "../../components/icon/icon"
-  }
+	"enablePullDownRefresh": true,
+	"backgroundTextStyle": "dark",
+	"usingComponents": {
+		"modal": "../../components/modal/modal",
+		"tui-icon": "../../components/icon/icon"
+	}
 }
