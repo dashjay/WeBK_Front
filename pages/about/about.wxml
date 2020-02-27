@@ -1,7 +1,7 @@
 <!--pages/my/my.wxml-->
 <view class='container'>
 	<view class='top-container'>
-		<image class='bg-img' src='../../static/images/my/mine_bg_3x.png'></image>
+		<!-- <image class='bg-img' src='../../static/images/my/mine_bg_3x.png'></image> -->
 		<view bindtap='logout' class='logout' hover-class="opcity" hover-stay-time="150">
 			<image class='logout-img' src='../../static/images/my/icon_out_3x.png' hidden='{{!isLogin}}'></image>
 			<text class='logout-txt' hidden='{{!isLogin}}'>退出</text>

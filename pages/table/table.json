@@ -3,6 +3,9 @@
 	"backgroundTextStyle": "dark",
 	"usingComponents": {
 		"modal": "../../components/modal/modal",
-		"tui-icon": "../../components/icon/icon"
+		"tui-icon": "../../components/icon/icon",
+		"tui-button": "../../components/extend/button/button",
+		"tui-fab": "../../components/tui-fab/tui-fab",
+		"drawer": "../../components/drawer/drawer"
 	}
 }

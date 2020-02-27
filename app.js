@@ -11,6 +11,8 @@ App({
 		},
 		classtable: [],
 		session: "",
+		openid: "",
+		color:"#987332",
 		server: "https://dev.vincenteliang.cn/"
 		// server: "http://localhost:8088/"
 	},

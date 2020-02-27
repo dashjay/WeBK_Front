@@ -1,22 +1,104 @@
 const app = getApp()
+const util = require('../../utils/util.js')
+const fab = require("../../utils/fab.js")
 import regeneratorRuntime from '../../utils/regenerator-runtime/runtime'
 
 Page({
 	data: {
-		colorArrays: ["#85B8CF", "#90C652", "#D8AA5A", "#FC9F9D", "#0A9A84", "#61BC69", "#12AEF3", "#E29AAD"],
+		//fabs
+		left: 0,
+		right: 80,
+		bottom: 100,
+		bgColor: app.globalData.color,
+		//fabs end
+
+		//drawer
+
+		regionArr: [{
+				"text": "浅蓝",
+				"color": "#85B8CF"
+			}, {
+				"text": "黄绿",
+				"color": "#90C652"
+			}, {
+				"text": "棕色",
+				"color": "#D8AA5A"
+			}, {
+				"text": "粉色",
+				"color": "#FC9F9D"
+			}, {
+				"text": "浅蓝",
+				"color": "#85B8CF"
+			}, {
+				"text": "黄绿",
+				"color": "#90C652"
+			}, {
+				"text": "棕色",
+				"color": "#D8AA5A"
+			}, {
+				"text": "粉色",
+				"color": "#FC9F9D"
+			}, {
+				"text": "浅蓝",
+				"color": "#85B8CF"
+			}, {
+				"text": "黄绿",
+				"color": "#90C652"
+			}, {
+				"text": "棕色",
+				"color": "#D8AA5A"
+			}, {
+				"text": "粉色",
+				"color": "#FC9F9D"
+			}, {
+				"text": "浅蓝",
+				"color": "#85B8CF"
+			}, {
+				"text": "黄绿",
+				"color": "#90C652"
+			}, {
+				"text": "棕色",
+				"color": "#D8AA5A"
+			}, {
+				"text": "粉色",
+				"color": "#FC9F9D"
+			}, {
+				"text": "浅蓝",
+				"color": "#85B8CF"
+			}, {
+				"text": "黄绿",
+				"color": "#90C652"
+			}, {
+				"text": "棕色",
+				"color": "#D8AA5A"
+			}, {
+				"text": "粉色",
+				"color": "#FC9F9D"
+			}
+
+		],
+		showModalStatus: false,
+		animationData: "",
+		regionTxt: "粤",
+		tabIndex: 26,
+
+		//drawer
+		colorArrays: ["", , "", "#0A9A84", "#61BC69", "#12AEF3", "#E29AAD"],
 		lastX: 0,
 		currentGesture: '',
-		week_num: 3,
+		week_num: 1,
 		uid: '',
+		list: fab,
 		modal: false,
 		button: [{
 			text: "给他评价",
 			type: 'blue',
 			plain: true
-		}, ],
+		}],
 		current_course: null,
 		animation: true,
-
+		week: ['一', '二', '三', '四', '五'],
+		date_list: [],
 		durations: ["8:00-9:35", "9:55-11:30", "1:30-3:05", "3:20-4:55"]
 	},
 
@@ -42,9 +124,9 @@ Page({
 		if (table) {
 			app.globalData.classtable = table;
 		}
-		let session = wx.getStorageSync("session")
-		if (session) {
-			app.globalData.session = session;
+		let openid = wx.getStorageSync("openid")
+		if (openid) {
+			app.globalData.openid = openid;
 		}
 	},
 
@@ -56,9 +138,9 @@ Page({
 		// 获取成功
 		if (Rescode2Session.data.status) {
 			let obj = Rescode2Session.data.object;
-			app.globalData.session = obj.session_key;
-			wx.setStorageSync("session", obj.session_key)
-			console.log("储存session成功", obj.session_key)
+			app.globalData.openid = obj.openid;
+			wx.setStorageSync("openid", obj.openid)
+
 			wx.showToast({
 				title: "和服务器连通,下拉获取课表",
 				icon: "none"
@@ -108,7 +190,7 @@ Page({
 		wx.request({
 			url: app.globalData.server + "api/get_table",
 			header: {
-				session: app.globalData.session,
+				openid: app.globalData.openid,
 			},
 			success(res) {
 				if (res.data.code == "SUCCESS") {
@@ -211,13 +293,13 @@ Page({
 		if (!this.haveData()) {
 			return
 		}
-
 		// 获得今天日期
 		var now = new Date()
 
 		// 获得开始日期
 		var temp = app.globalData.start
 		var start = new Date(temp.year, temp.month - 1, temp.day)
+
 
 		var diff_day_without_increment = parseInt((now - start) / (1000 * 60 * 60 * 24))
 
@@ -234,8 +316,24 @@ Page({
 		wx.setNavigationBarTitle({
 			title: "第" + this.data.week_num + "周"
 		})
+
+		let temp_date = []
+		var temp = 0;
+		for (; temp < 5; temp++) {
+			var ags = app.globalData.start
+			var today = new Date(ags.year, ags.month - 1, ags.day)
+			today.setDate(start.getDate() + temp + ((this.data.week_num - 1) * 7))
+
+			temp_date.push(today.getMonth() + "/" + today.getDate())
+		}
+		this.setData({
+			date_list: temp_date
+		})
 	},
 
+	FormatTime(t) {
+		return t.getMonth() + "/" + t.getDate()
+	},
 	incrementAdd: function() {
 		var increment = this.data.increment + 7
 		this.setData({
@@ -256,6 +354,8 @@ Page({
 		this.setData({
 			increment: 0
 		})
+
+
 		this.updateScreen()
 	},
 
@@ -352,7 +452,84 @@ Page({
 			modal: false
 		})
 	},
+	onShareAppMessage: function(e) {
+		return {
+			title: '快看看你的课表',
+			path: 'pages/table/table'
+		}
+	},
+	onClick(e) {
+		let index = e.detail.index
+		switch (index) {
+			case -1:
+				break;
+			case 0:
+				this.showModal()
+				break;
+			case 1:
+				util.toast("您点击了悬浮按钮1")
+				break;
+			case 2:
+				util.toast("您点击了悬浮按钮2")
+				break;
+			default:
+				break;
+		}
+	},
 
 
+
+
+
+	// Drawer start
+	showModal: function() {
+		// 显示遮罩层
+		// 创建动画实例 
+		var animation = wx.createAnimation({
+			duration: 220,
+			timingFunction: "linear",
+			delay: 0
+		})
+		//执行第一组动画：Y轴偏移500px后(盒子高度是500px) ，停
+		animation.translateY(500).step()
+		//导出动画对象赋给数据对象储存
+		this.setData({
+			animationData: animation.export(),
+			showModalStatus: true
+		})
+		setTimeout(function() {
+			animation.translateY(0).step()
+			this.setData({
+				animationData: animation.export()
+			})
+		}.bind(this), 200)
+	},
+	hideModal: function() {
+		this.setData({
+			showModalStatus: false
+		})
+	},
+	getRegion: function(e) {
+		const index = e.currentTarget.dataset.index
+		let t = this.data.regionArr[index]
+		this.setData({
+			regionTxt: this.data.regionArr[index],
+			tabIndex: index,
+			showModalStatus: false,
+			bgColor: t.color
+		})
+
+		wx.showToast({
+			title: '您选择了：' + t.text,
+			icon: "none"
+		})
+
+
+		app.globalData.color = t.color
+		wx.setNavigationBarColor({ //设置导航栏颜色
+			frontColor: '#ffffff', //注意frontColor的值只能为000000或者111111
+			backgroundColor: t.color
+		});
+	},
 
 })
