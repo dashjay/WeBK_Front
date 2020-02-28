@@ -1,6 +1,7 @@
 const app = getApp()
 const util = require('../../utils/util.js')
 const fab = require("../../utils/fab.js")
+const colors = require("../../utils/colors.js")
 import regeneratorRuntime from '../../utils/regenerator-runtime/runtime'
 
 Page({
@@ -9,81 +10,17 @@ Page({
 		left: 0,
 		right: 80,
 		bottom: 100,
-		bgColor: app.globalData.color,
+		bgColor: app.globalData.color_data.color,
+		tColor: "#FFFFFF",
 		//fabs end
 
 		//drawer
-
-		regionArr: [{
-				"text": "浅蓝",
-				"color": "#85B8CF"
-			}, {
-				"text": "黄绿",
-				"color": "#90C652"
-			}, {
-				"text": "棕色",
-				"color": "#D8AA5A"
-			}, {
-				"text": "粉色",
-				"color": "#FC9F9D"
-			}, {
-				"text": "浅蓝",
-				"color": "#85B8CF"
-			}, {
-				"text": "黄绿",
-				"color": "#90C652"
-			}, {
-				"text": "棕色",
-				"color": "#D8AA5A"
-			}, {
-				"text": "粉色",
-				"color": "#FC9F9D"
-			}, {
-				"text": "浅蓝",
-				"color": "#85B8CF"
-			}, {
-				"text": "黄绿",
-				"color": "#90C652"
-			}, {
-				"text": "棕色",
-				"color": "#D8AA5A"
-			}, {
-				"text": "粉色",
-				"color": "#FC9F9D"
-			}, {
-				"text": "浅蓝",
-				"color": "#85B8CF"
-			}, {
-				"text": "黄绿",
-				"color": "#90C652"
-			}, {
-				"text": "棕色",
-				"color": "#D8AA5A"
-			}, {
-				"text": "粉色",
-				"color": "#FC9F9D"
-			}, {
-				"text": "浅蓝",
-				"color": "#85B8CF"
-			}, {
-				"text": "黄绿",
-				"color": "#90C652"
-			}, {
-				"text": "棕色",
-				"color": "#D8AA5A"
-			}, {
-				"text": "粉色",
-				"color": "#FC9F9D"
-			}
-
-		],
+		regionArr: colors,
 		showModalStatus: false,
 		animationData: "",
 		regionTxt: "粤",
 		tabIndex: 26,
-
 		//drawer
-		colorArrays: ["", , "", "#0A9A84", "#61BC69", "#12AEF3", "#E29AAD"],
 		lastX: 0,
 		currentGesture: '',
 		week_num: 1,
@@ -99,7 +36,8 @@ Page({
 		animation: true,
 		week: ['一', '二', '三', '四', '五'],
 		date_list: [],
-		durations: ["8:00-9:35", "9:55-11:30", "1:30-3:05", "3:20-4:55"]
+		durations: ["8:00-9:35", "9:55-11:30", "1:30-3:05", "3:20-4:55"],
+		bg_img: "",
 	},
 
 
@@ -128,6 +66,15 @@ Page({
 		if (openid) {
 			app.globalData.openid = openid;
 		}
+
+		let bg_img = wx.getStorageSync('bg_img')
+		if (bg_img) {
+			this.setData({
+				bg_img: bg_img
+			})
+		}
+
+		this.SetColor(app.globalData.color_data)
 	},
 
 	async Login() {
@@ -142,8 +89,9 @@ Page({
 			wx.setStorageSync("openid", obj.openid)
 
 			wx.showToast({
-				title: "和服务器连通,下拉获取课表",
-				icon: "none"
+				title: "首次开启小程序,下拉获取课表",
+				icon: "none",
+				duration: 1500
 			})
 		} else {
 			wx.showModal({
@@ -459,6 +407,7 @@ Page({
 		}
 	},
 	onClick(e) {
+		let that = this;
 		let index = e.detail.index
 		switch (index) {
 			case -1:
@@ -467,19 +416,35 @@ Page({
 				this.showModal()
 				break;
 			case 1:
-				util.toast("您点击了悬浮按钮1")
+				wx.chooseImage({
+					count: 1,
+					success(res) {
+						// 获取临时存储路径
+						const tfp = res.tempFilePaths
+						const fs = wx.getFileSystemManager()
+						fs.saveFile({
+							tempFilePath: tfp[0], // 传入一个临时文件路径
+							success(res) {
+								// console.log('图片缓存成功', res.savedFilePath) // res.savedFilePath 为一个本地缓存文件路径  
+								wx.setStorageSync('bg_img', res.savedFilePath)
+								that.setData({
+									bg_img: res.savedFilePath
+								})
+								wx.showToast({
+									title: "设置成功",
+								})
+							}
+						})
+					}
+				})
 				break;
 			case 2:
-				util.toast("您点击了悬浮按钮2")
+				util.toast("您点击了悬浮按钮2");
 				break;
 			default:
 				break;
 		}
 	},
-
-
-
-
 
 	// Drawer start
 	showModal: function() {
@@ -504,32 +469,55 @@ Page({
 			})
 		}.bind(this), 200)
 	},
+
+	// 点击空白区域关闭颜色盘
 	hideModal: function() {
 		this.setData({
 			showModalStatus: false
 		})
 	},
+
+	// 切换颜色
 	getRegion: function(e) {
+		// 获取选择的列表
 		const index = e.currentTarget.dataset.index
 		let t = this.data.regionArr[index]
 		this.setData({
 			regionTxt: this.data.regionArr[index],
 			tabIndex: index,
 			showModalStatus: false,
-			bgColor: t.color
+			bgColor: t.color,
+			tColor: t.text_color
 		})
 
-		wx.showToast({
-			title: '您选择了：' + t.text,
-			icon: "none"
-		})
+		app.globalData.color_data = t // 将全局的颜色设置为该颜色方便其他页面跟着选择
+		this.SetColor(t)
 
-
-		app.globalData.color = t.color
-		wx.setNavigationBarColor({ //设置导航栏颜色
-			frontColor: '#ffffff', //注意frontColor的值只能为000000或者111111
-			backgroundColor: t.color
-		});
 	},
+	SetColor(t) {
+		wx.setNavigationBarColor({ //设置导航栏颜色
+			frontColor: '#ffffff', //frontColor的值只能为000000或者111111
+			backgroundColor: t.color,
+			animation: {
+				duration: 600,
+				timingFunc: 'easeInOut'
+			}
+		});
+
+		wx.setStorageSync("color_data", t);
+
+		let rea = this.data.regionArr
+		for (var i = 0; i < 18; i++) {
+			rea[i].text_color = t.text_color
+		}
+		for (var i = 18; i < rea.length; i++) {
+			rea[i].color = t.color
+		}
+
+		this.setData({
+			regionArr: rea
+		})
+	}
+	//Drawer end
 
 })

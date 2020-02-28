@@ -8,8 +8,8 @@
 	</view>
 </view> -->
 
-<view style="" bindtouchstart="handleTouchStart" bindtouchmove="handleTouchMove" bindtouchend="handleTouchEnd"
- bindlongtap='bindLongTab'>
+<view style="background-image: url({{(bg_img!=''?bg_img:'')}}); background-repeat: no-repeat; background-position: center;"
+ bindtouchstart="handleTouchStart" bindtouchmove="handleTouchMove" bindtouchend="handleTouchEnd" bindlongtap='bindLongTab'>
 
 	<view class='top-style'>
 		<view wx:for="{{[0,1,2,3,4]}}" wx:key='' class="top-text">
@@ -31,15 +31,16 @@
 			</view>
 
 			<view wx:for="{{[1,3,5,7,9,11]}}" wx:key=''>
-				<view style="width:715rpx;margin-top:{{(item+1)*90}}rpx;  position: absolute;border-bottom:1rpx solid {{item==3||item==7?'#999':'lightgray'}};border-right: dashed;">
+				<view style="margin-top:{{(item+1)*90}}rpx; border-bottom:1.5rpx dashed {{item==3||item==7?'#2d2d2d':'#a8a8a8'}}; "
+				 class="hori-line">
 				</view>
 			</view>
 
 			<view wx:for="{{week_list}}" wx:key='' bindtap="OnClick" data-id="{{item.id}}">
 				<scroll-view scroll-x="true" class="flex-item kcb-item" style="margin-left:{{(item.day_of_week-1)*140+14}}rpx;margin-top:{{(item.class_of_day-1)*90+5}}rpx;height:{{item.duration*90-10}}rpx;background-color:{{bgColor}};border-radius:10rpx;">
 					<view style='display:flex;flex-direction:column;padding:10rpx 3rpx rpx 3rpx;'>
-						<view class="smalltext smallcut" style="margin: 0 auto;margin-bottom: 15rpx;">{{item.name}}</view>
-						<view class="smalltext" style="margin: 0 auto;margin-bottom: 15rpx;color: #ffffff;">{{item.place}}</view>
+						<view class="smalltext smallcut" style="margin: 0 auto;margin-bottom: 15rpx; color:{{tColor}}">{{item.name}}</view>
+						<view class="smalltext" style="margin: 0 auto;margin-bottom: 15rpx;color: {{tColor}};">{{item.place}}</view>
 					</view>
 				</scroll-view>
 			</view>
@@ -56,5 +57,6 @@
 <view class="mask-screen" bindtap="hideModal" hidden="{{!showModalStatus}}"></view>
 <view animation="{{animationData}}" class="region-box" hidden="{{!showModalStatus}}">
 	<view class="region-txt {{(index==regionArr.length-3 || index==regionArr.length-2 || index==regionArr.length-1)?'grow':''}} {{tabIndex==index?'active':''}}"
-	 wx:for="{{regionArr}}" wx:key="{{index}}" data-index="{{index}}" style="background-color: {{item.color}};" catchtap="getRegion">{{item.text}}</view>
+	 wx:for="{{regionArr}}" wx:key="{{index}}" data-index="{{index}}" style="background-color: {{item.color}};color: {{item.text_color}};"
+	 catchtap="getRegion">{{item.text}}</view>
 </view>

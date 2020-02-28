@@ -1,0 +1,54 @@
+<view style="position: absolute; z-index: -9; width: 414px;height: 726px; background-image: url({{(bg_img!=''?bg_img:'')}}); background-repeat: {{background_repeat}};background-size: {{background_size}}; background-position: {{background_position}}; opacity: 0.5;">
+
+</view>
+
+<view class="title" style="margin-left: 50rpx;">
+	背景重复方式:{{background_repeat}}
+</view>
+<view style="margin-left: 50rpx;">
+	<button bindtap="detail" class="tui-btn tui-btn-small tui-primary tui-fillet" data-s="repeat" data-t="no-repeat"
+	 hover-class="tui-primary-hover">不重复</button>
+	<button bindtap="detail" class="tui-btn tui-btn-small tui-primary tui-fillet" data-s="repeat" data-t="repeat"
+	 hover-class="tui-primary-hover">重复</button>
+	<button bindtap="detail" class="tui-btn tui-btn-small tui-danger tui-fillet" data-s="repeat" data-t="repeat-x"
+	 hover-class="tui-danger-hover">水平方向重复</button>
+	<button bindtap="detail" class="tui-btn tui-btn-small tui-warning tui-fillet" data-s="repeat" data-t="repeat-y"
+	 hover-class="tui-warning-hover">竖直方向重复</button>
+</view>
+
+
+<view class="title" style="margin-left: 50rpx;">
+	图片尺寸 :{{background_size}}
+</view>
+<view style="margin-left: 50rpx;">
+	<button bindtap="detail" class="tui-btn tui-btn-small tui-primary tui-fillet" data-s="size" data-t="cover" hover-class="tui-primary-hover">保持比例拉伸至最大</button>
+	<button bindtap="detail" class="tui-btn tui-btn-small tui-danger tui-fillet" data-s="size" data-t="contain"
+	 hover-class="tui-danger-hover">拉伸至最小</button>
+
+	<view class="tui-number-box">
+		<view class="tui-title"> X——SIZE</view>
+		<tui-numberbox min="1" max="9999" value="{{valuex}}" bind:change="changex"></tui-numberbox>
+	</view>
+	<view class="tui-number-box">
+		<view class="tui-title"> Y-SIZE</view>
+		<tui-numberbox min="1" max="9999" value="{{valuey}}" bind:change="changey"></tui-numberbox>
+	</view>
+
+</view>
+
+
+<view class="tui-title" style="margin-left: 50rpx;">
+	图片位置
+</view>
+<view style="margin-left: 25rpx;margin-right: 25rpx;">
+	<tui-grid>
+		<block wx:for="{{dataList}}" wx:key="{{index}}">
+			<tui-grid-item cell="3" bind:click="detail" data-s="position" data-t="{{item.key}}">
+
+				<text class="tui-grid-label">{{item.name}}</text>
+			</tui-grid-item>
+		</block>
+	</tui-grid>
+</view>
+
+<button bindtap="confirm" class="tui-btn tui-btn-big tui-warning tui-fillet" style="margin-top: 150rpx;" hover-class="tui-warning-hover">确定</button>

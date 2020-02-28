@@ -3,7 +3,8 @@
 import regeneratorRuntime from './utils/regenerator-runtime/runtime'
 App({
 	globalData: {
-		version: "0.9.0",
+		version: "0.9.2",
+		// 一个学期开始的时间
 		"start": {
 			"year": 2020,
 			"month": 2,
@@ -12,11 +13,28 @@ App({
 		classtable: [],
 		session: "",
 		openid: "",
-		color:"#987332",
+		color_data: {
+			color: "#987332",
+			text_color: "#FFFFFF"
+		},
 		server: "https://dev.vincenteliang.cn/"
-		// server: "http://localhost:8088/"
 	},
+	onLaunch() {
 
+		// 课程表颜色
+		let color_data = wx.getStorageSync("color_data")
+		if (color_data) {
+			this.globalData.color_data = color_data
+			wx.setNavigationBarColor({ //设置导航栏颜色
+				frontColor: '#ffffff', //注意frontColor的值只能为000000或者111111
+				backgroundColor: color_data.color,
+				animation: {
+					duration: 600,
+					timingFunc: 'easeInOut'
+				}
+			});
+		}
+	},
 	GetCode() {
 		return new Promise(function(resolve, reject) {
 			wx.login({

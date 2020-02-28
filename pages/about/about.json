@@ -1,4 +1,7 @@
 {
 	"backgroundColorTop": "#5677FC",
-	"navigationBarTitleText": "更多功能"
+	"navigationBarTitleText": "更多功能",
+	"usingComponents": {
+		"tui-footer": "../../components/footer/footer"
+	}
 }

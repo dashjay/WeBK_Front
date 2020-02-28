@@ -6,4 +6,12 @@ module.exports = [{
 	fontSize: 28,
 	//字体颜色
 	color: "#fff"
+}, {
+	bgColor: "#7658c2",
+	//名称
+	text: "换背景",
+	//字体大小
+	fontSize: 28,
+	//字体颜色
+	color: "#fff"
 }]

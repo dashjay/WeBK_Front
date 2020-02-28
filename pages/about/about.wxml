@@ -1,5 +1,5 @@
 <!--pages/my/my.wxml-->
-<view class='container'>
+<view class='container' style="background-color: {{color}};">
 	<view class='top-container'>
 		<!-- <image class='bg-img' src='../../static/images/my/mine_bg_3x.png'></image> -->
 		<view bindtap='logout' class='logout' hover-class="opcity" hover-stay-time="150">
@@ -54,8 +54,8 @@
 		</view>
 		<view class='ul-item'>
 			<view bindtap='previewReward' data-index="4" class='item' hover-class="opcity" hover-stay-time="150">
-				<image class='item-img' src='../../static/images/my/reward.png'></image>
-				<text class='item-name'>赞赏</text>
+				<image class='item-img' src='../../static/images/my/setting.png'></image>
+				<text class='item-name'>修复课表</text>
 			</view>
 			<view data-index="5" class='item' hover-class="opcity" hover-stay-time="150">
 				<button open-type="feedback" class="btn-feedback"> </button>
@@ -67,7 +67,10 @@
 				<text class='item-name'>日志</text>
 			</view>
 		</view>
-
+		<!-- <official-account></official-account> -->
+	</view>
+	<view style="bottom: 15rpx; ">
+		<tui-footer fixed="{{false}}" copyright="{{copyright}}" navigate="{{navigate}}" bgcolor="#fafafa" tui-footer-class="tui-custom"></tui-footer>
 	</view>
 </view>
 

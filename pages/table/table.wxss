@@ -81,9 +81,15 @@
 .divLine {
 	height: 100%;
 	position: absolute;
-	/* border-radius: 3rpx; */
-	border-right: 5rpx dashed #b6b8b1;
-	width: 5rpx;
+	/* border: solid #9e9e9e; */
+	border-right: solid #9e9e9e 0.7rpx;
+}
+
+.hori-line {
+
+	position: absolute;
+	width:100%; 
+
 }
 
 /* .container {

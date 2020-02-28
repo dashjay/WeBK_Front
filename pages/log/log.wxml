@@ -1,5 +1,5 @@
 <view class="container">
-	<view class="tui-header">Hi，欢迎使用Thor UI！当前版本：
+	<view class="tui-header">Hi，欢迎使用WeBK
 		<text class="tui-version">V{{version}}</text>
 	</view>
 	<view class="tui-log">
