@@ -1,10 +1,7 @@
 /* pages/table/table.wxss */
 
-.flex-item {
-	width: 120rpx;
-}
-
 .kcb-item {
+	width: 120rpx;
 	position: absolute;
 	justify-content: center;
 	display: flex;
@@ -47,11 +44,6 @@
 	align-items: center;
 }
 
-.full-table {
-	height: 1000rpx;
-	width: 600rpx;
-	display: flex;
-}
 
 .left-num-bar {
 	background-color: #eee;
@@ -88,7 +80,7 @@
 .hori-line {
 
 	position: absolute;
-	width:100%; 
+	width: 100%;
 
 }
 
@@ -229,3 +221,10 @@
 }
 
 /*底部抽屉样式 end*/
+
+
+
+.scroll-lock {
+	height: 100%;
+	overflow-y: hidden;
+}

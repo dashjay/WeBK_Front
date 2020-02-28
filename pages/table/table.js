@@ -6,6 +6,8 @@ import regeneratorRuntime from '../../utils/regenerator-runtime/runtime'
 
 Page({
 	data: {
+		custom_width: app.globalData.custom_width,
+		custom_height: app.globalData.custom_height,
 		//fabs
 		left: 0,
 		right: 80,
@@ -15,8 +17,9 @@ Page({
 		//fabs end
 
 		//drawer
+
 		regionArr: colors,
-		showModalStatus: false,
+		show_color: false,
 		animationData: "",
 		regionTxt: "粤",
 		tabIndex: 26,
@@ -38,6 +41,9 @@ Page({
 		date_list: [],
 		durations: ["8:00-9:35", "9:55-11:30", "1:30-3:05", "3:20-4:55"],
 		bg_img: "",
+		background_repeat: 'no-repeat',
+		background_size: 'cover',
+		background_position: 'center',
 	},
 
 
@@ -67,10 +73,10 @@ Page({
 			app.globalData.openid = openid;
 		}
 
-		let bg_img = wx.getStorageSync('bg_img')
-		if (bg_img) {
+		let base64img = wx.getStorageSync('base64img')
+		if (base64img) {
 			this.setData({
-				bg_img: bg_img
+				bg_img: base64img
 			})
 		}
 
@@ -131,6 +137,16 @@ Page({
 		} else {
 			this.incrementZero();
 		}
+
+
+		let setting = wx.getStorageSync("setting")
+		if (setting) {
+			this.setData({
+				background_repeat: setting.background_repeat,
+				background_size: setting.background_size,
+				background_position: setting.background_position,
+			})
+		}
 	},
 
 	LoadData() {
@@ -143,7 +159,7 @@ Page({
 			success(res) {
 				if (res.data.code == "SUCCESS") {
 					let body = res.data.body;
-
+					app.globalData.classtable = [];
 					for (var i = 1; i <= Object.keys(body.map).length; i++) { //每天6节课 12个时区
 
 						for (var j = 1; j <= Object.keys(body.map[i]).length; j++) { // 七天
@@ -181,10 +197,9 @@ Page({
 									"id": x["classroom.id"],
 								})
 							})
-
-
 						}
 					}
+					console.log(app.globalData.classtable)
 				} else {
 					wx.showModal({
 						title: "获取课表失败",
@@ -246,7 +261,7 @@ Page({
 
 		// 获得开始日期
 		var temp = app.globalData.start
-		var start = new Date(temp.year, temp.month - 1, temp.day)
+		var start = new Date(temp.year, temp.month, temp.day)
 
 
 		var diff_day_without_increment = parseInt((now - start) / (1000 * 60 * 60 * 24))
@@ -269,7 +284,7 @@ Page({
 		var temp = 0;
 		for (; temp < 5; temp++) {
 			var ags = app.globalData.start
-			var today = new Date(ags.year, ags.month - 1, ags.day)
+			var today = new Date(ags.year, ags.month, ags.day)
 			today.setDate(start.getDate() + temp + ((this.data.week_num - 1) * 7))
 
 			temp_date.push(today.getMonth() + "/" + today.getDate())
@@ -369,7 +384,10 @@ Page({
 		}
 		return weeks;
 	},
-	OnClick: function(e) {
+
+	// 某一节课被点击
+	on_lesson_click: function(e) {
+		// 选中目标
 		var target
 		let id = e.currentTarget.dataset.id
 		// console.log(id);
@@ -382,7 +400,7 @@ Page({
 
 		this.setData({
 			current_course: target,
-			modal: true,
+			show_lesson_card: true,
 		})
 
 		// console.log(target);
@@ -395,9 +413,10 @@ Page({
 		})
 	},
 
-	hideModal: function() {
+	//	课程卡隐藏
+	hide_lesson_card: function() {
 		this.setData({
-			modal: false
+			show_lesson_card: false,
 		})
 	},
 	onShareAppMessage: function(e) {
@@ -406,7 +425,7 @@ Page({
 			path: 'pages/table/table'
 		}
 	},
-	onClick(e) {
+	onFabClick(e) {
 		let that = this;
 		let index = e.detail.index
 		switch (index) {
@@ -426,10 +445,23 @@ Page({
 							tempFilePath: tfp[0], // 传入一个临时文件路径
 							success(res) {
 								// console.log('图片缓存成功', res.savedFilePath) // res.savedFilePath 为一个本地缓存文件路径  
+
 								wx.setStorageSync('bg_img', res.savedFilePath)
-								that.setData({
-									bg_img: res.savedFilePath
+								fs.readFile({
+									filePath: res.savedFilePath,
+									encodeing: 'base64',
+									success(res) {
+										var base64 = wx.arrayBufferToBase64(res.data)
+										var base64img = 'data:image/png;base64,' + base64
+										that.setData({
+											bg_img: base64img
+										})
+										wx.setStorageSync('base64img', base64img)
+									}
 								})
+
+
+
 								wx.showToast({
 									title: "设置成功",
 								})
@@ -439,7 +471,9 @@ Page({
 				})
 				break;
 			case 2:
-				util.toast("您点击了悬浮按钮2");
+				wx.navigateTo({
+					url: "/pages/settings/settings"
+				})
 				break;
 			default:
 				break;
@@ -460,7 +494,7 @@ Page({
 		//导出动画对象赋给数据对象储存
 		this.setData({
 			animationData: animation.export(),
-			showModalStatus: true
+			show_color: true
 		})
 		setTimeout(function() {
 			animation.translateY(0).step()
@@ -471,11 +505,13 @@ Page({
 	},
 
 	// 点击空白区域关闭颜色盘
-	hideModal: function() {
+	hideColor: function() {
 		this.setData({
-			showModalStatus: false
+			show_color: false
 		})
 	},
+
+
 
 	// 切换颜色
 	getRegion: function(e) {
@@ -485,7 +521,7 @@ Page({
 		this.setData({
 			regionTxt: this.data.regionArr[index],
 			tabIndex: index,
-			showModalStatus: false,
+			show_color: false,
 			bgColor: t.color,
 			tColor: t.text_color
 		})
