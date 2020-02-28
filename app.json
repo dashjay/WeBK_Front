@@ -4,7 +4,8 @@
 		"pages/about/about",
 		"pages/webview/webview",
 		"pages/log/log",
-		"pages/rate/rate"
+		"pages/rate/rate",
+		"pages/settings/settings"
 	],
 	"window": {
 		"backgroundTextStyle": "dark",
